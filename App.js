@@ -12,6 +12,7 @@ import {
 } from "./src/data";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import HeaderBusInfo from "./src/HeaderBusInfo";
 
 export default function App() {
   const sections = getSections(busStop.buses);
@@ -58,6 +59,12 @@ export default function App() {
     );
   }
 
+  function ListHeaderComponent(){
+    return(
+      <HeaderBusInfo />
+    )
+  }
+
   function renderSectionHeader({ section: { title } }) {
     return (
       <View
@@ -88,10 +95,11 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["left", "right"]}>
         <SectionList
           style={{ flex: 1, width: "100%" }}
           sections={sections}
+          ListHeaderComponent={ListHeaderComponent}
           renderSectionHeader={renderSectionHeader}
           renderItem={renderItem}
         />
