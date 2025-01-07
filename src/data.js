@@ -1,4 +1,5 @@
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
+import { COLOR } from "./color";
 
 export const busStop = {
   id: 23284,
@@ -13,16 +14,16 @@ export const busStop = {
       isBookmarked: false,
       nextBusInfos: [
         {
-          arrivalTime: dayjs().add(8, 'minute'),
+          arrivalTime: dayjs().add(8, "minute"),
           numOfRemainedStops: 5,
           numOfPassengers: 3,
         },
         {
-          arrivalTime: dayjs().add(21, 'minute').add(3, 'second'),
+          arrivalTime: dayjs().add(21, "minute").add(3, "second"),
           numOfRemainedStops: 11,
           numOfPassengers: 5,
-        }
-      ]
+        },
+      ],
     },
     {
       type: "B",
@@ -191,5 +192,89 @@ export const busStop = {
         },
       ],
     },
-  ]
+  ],
 };
+
+export const getSections = (buses) => {
+  const bBuses = [];
+  const gBuses = [];
+  const rBuses = [];
+
+  for (const bus of buses) {
+    if (bus.type === "B") {
+      bBuses.push(bus);
+    } else if (bus.type === "G") {
+      gBuses.push(bus);
+    } else if (bus.type === "R") {
+      rBuses.push(bus);
+    }
+  }
+
+  const sections = [];
+  if (bBuses.length > 0) {
+    sections.push({
+      title: "간선버스",
+      data: bBuses,
+    });
+  }
+
+  if (gBuses.length > 0) {
+    sections.push({
+      title: "지선버스",
+      data: gBuses,
+    });
+  }
+
+  if (rBuses.length > 0) {
+    sections.push({
+      title: "직행버스",
+      data: rBuses,
+    });
+  }
+
+  return sections;
+};
+
+export function getBusNumColorByType(type) {
+  switch (type) {
+    case "B":
+      return COLOR.BUS_B;
+    case "G":
+      return COLOR.BUS_G;
+    case "R":
+      return COLOR.BUS_R;
+    default:
+      return "transparent";
+  }
+}
+
+export function getRemainedTimeText(now, arrivalTime){
+    const remainMin = dayjs(arrivalTime).diff(dayjs(now),'minute');
+    const remainSec = dayjs(arrivalTime).diff(dayjs(now),'second') % 60;
+
+    if(remainMin <= 0 && remainSec <= 0){
+        return "도착 또는 출발";
+    }
+    if(remainMin <= 0 && remainSec <= 30){
+        return "곧 도착";
+    }
+    if(remainMin <= 0){
+        return `${remainSec}초`;
+    }
+
+    return `${remainMin}분 ${remainSec}초`;
+}
+
+const MAX_SEAT_NUM_OF_R = 45;
+export function getSeatStatusText(type, numOfPassengers){
+    switch(type){
+        case "B":
+        case "G":
+            return numOfPassengers >= 30 ? "혼잡" : numOfPassengers >=20 ? "보통" : "여유";
+        case "R":
+            return `${MAX_SEAT_NUM_OF_R - numOfPassengers}석`;
+        default:
+            return "transparent";
+    }
+
+}
