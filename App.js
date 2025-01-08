@@ -23,7 +23,7 @@ export default function App() {
   const [now, setNow] = useState(dayjs());
   const [isRefreshing, setIsRefreshing] = useState();
 
-  const {NEWCOLOR,toggleIsDark, isDark} = useTheme();
+  const {NEWCOLOR, toggleIsDark, isDark} = useTheme();
 
   function renderItem({ item }) {
     const firstNextBusInfo = item.nextBusInfos?.[0] ?? null;
@@ -125,11 +125,10 @@ export default function App() {
   useEffect(() => {
     if(isRefreshing){
       setNow(dayjs());
-      setIsRefreshing(false);  
     }
-    // setTimeout(() => {
-    //   setIsRefreshing(false);  
-    // }, 2000);
+    setTimeout(() => {
+      setIsRefreshing(false);  
+    }, 500);
     
   },[isRefreshing])
 
