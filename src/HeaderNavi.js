@@ -4,15 +4,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { COLOR } from "./color";
 
-function HederNavigationIconButton({ iconName, onPress }) {
+function HederNavigationIconButton({ iconName, onPress, NEWCOLOR }) {
   return (
     <TouchableOpacity style={{ padding: 10 }} onPress={onPress}>
-      <SimpleLineIcons name={iconName} size={23} color={COLOR.WHITE} />
+      <SimpleLineIcons name={iconName} size={23} color={NEWCOLOR.WHITE_BLACK} />
     </TouchableOpacity>
   );
 }
 
-export default () => {
+export default ({NEWCOLOR,}) => {
     const insets = useSafeAreaInsets();
 
     return (
@@ -26,8 +26,8 @@ export default () => {
                     backgroundColor: COLOR.GRAY_3,
                 }}
                 >
-                <HederNavigationIconButton iconName="arrow-left" onPress={() => {}} />
-                <HederNavigationIconButton iconName="home" onPress={() => {}} />
+                <HederNavigationIconButton iconName="arrow-left" onPress={() => {}} NEWCOLOR={NEWCOLOR} />
+                <HederNavigationIconButton iconName="home" onPress={() => {}} NEWCOLOR={NEWCOLOR} />
 
             </View>
 

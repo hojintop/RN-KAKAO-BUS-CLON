@@ -15,11 +15,15 @@ import { useEffect, useState } from "react";
 import HeaderBusInfo from "./src/HeaderBusInfo";
 import Margin from "./src/Margin";
 import HeaderNavi from "./src/HeaderNavi";
+import { useTheme } from "./src/use-theme";
 
 export default function App() {
   const sections = getSections(busStop.buses);
+  
   const [now, setNow] = useState(dayjs());
   const [isRefreshing, setIsRefreshing] = useState();
+
+  const {NEWCOLOR,toggleIsDark, isDark} = useTheme();
 
   function renderItem({ item }) {
     const firstNextBusInfo = item.nextBusInfos?.[0] ?? null;
@@ -58,13 +62,18 @@ export default function App() {
         onPressBookmark={() => {}}
         isBookmarked={item.isBookmarked}
         processedNextBusInfos={processedNextBusInfos}
+        NEWCOLOR={NEWCOLOR}
       />
     );
   }
 
   function ListHeaderComponent(){
     return(
-      <HeaderBusInfo />
+      <HeaderBusInfo 
+        NEWCOLOR={NEWCOLOR}
+        isDark={isDark}
+        toggleIsDark={toggleIsDark}
+      />
     )
   }
 
@@ -72,23 +81,23 @@ export default function App() {
     return (
       <View
         style={{
-          backgroundColor: COLOR.GRAY_1,
+          backgroundColor: NEWCOLOR.GRAY_1_GRAY_4,
           paddingLeft: 13,
           paddingVertical: 4,
           borderTopWidth: 0.5,
           borderBottomWidth: 0.5,
-          borderTopColor: COLOR.GRAY_2,
-          borderBottomColor: COLOR.GRAY_2,
+          borderTopColor: NEWCOLOR.GRAY_2_GRAY_3,
+          borderBottomColor: NEWCOLOR.GRAY_2_GRAY_3,
         }}
       >
-        <Text style={{ fontSize: 14, color: COLOR.GRAY_4 }}>{title}</Text>
+        <Text style={{ fontSize: 14, color: NEWCOLOR.GRAY_4_GRAY_1 }}>{title}</Text>
       </View>
     );
   }
 
   function ItemSeparatorComponent(){
     return(
-      <View style={{width: '100%', height: 1, backgroundColor: COLOR.GRAY_1}}/>
+      <View style={{width: '100%', height: 1, backgroundColor: NEWCOLOR.GRAY_1_GRAY_4}}/>
     );
 
   }
@@ -126,8 +135,10 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container} edges={["left", "right"]}>
-        <HeaderNavi />
+      <SafeAreaView style={{...styles.container,backgroundColor: NEWCOLOR.WHITE_BLACK}} edges={["left", "right"]}>
+        <HeaderNavi 
+          NEWCOLOR={NEWCOLOR}
+        />
         <SectionList
           style={{ flex: 1, width: "100%",}}
           sections={sections}
@@ -146,7 +157,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },

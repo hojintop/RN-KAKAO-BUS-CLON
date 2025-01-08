@@ -11,10 +11,11 @@ export default({
     onPressBookmark,
     isBookmarked,
     processedNextBusInfos,
+    NEWCOLOR,
 }) => {
 
     return(
-        <View style={{flexDirection: 'row', height: 70, backgroundColor: COLOR.WHITE,}}>
+        <View style={{flexDirection: 'row', height: 70, backgroundColor: NEWCOLOR.WHITE_BLACK,}}>
             <View style={{flex: 0.9, flexDirection: 'row', alignItems: 'center',}}>
                 {/* 북마크 */}
                 <BookmarkButton
@@ -26,7 +27,7 @@ export default({
                 {/* 버스번호, 방향 */}
                 <View style={{flex: 1, }}>
                     <Text style={{color: numColor , fontSize: 20, fontWeight: 'bold'}}>{num}</Text>
-                    <Text style={{fontSize: 14, color: COLOR.GRAY_3, marginRight: 2}}>{directionDescription} 방향</Text>
+                    <Text style={{fontSize: 14, color: NEWCOLOR.GRAY_3_GRAY_2, marginRight: 2}}>{directionDescription} 방향</Text>
                 </View>
             </View>
 
@@ -40,6 +41,7 @@ export default({
                             remainedTimeText={info.remainedTimeText}
                             numOfRemainedStops={info.numOfRemainedStops}
                             seatStatusText={info.seatStatusText}
+                            NEWCOLOR={NEWCOLOR}
                         />
                     ))
                 }
