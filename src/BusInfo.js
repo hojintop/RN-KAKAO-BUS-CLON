@@ -14,11 +14,11 @@ export default({
 }) => {
 
     return(
-        <View style={{flexDirection: 'row'}}>
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',}}>
+        <View style={{flexDirection: 'row', height: 70, backgroundColor: COLOR.WHITE,}}>
+            <View style={{flex: 0.9, flexDirection: 'row', alignItems: 'center',}}>
                 {/* 북마크 */}
                 <BookmarkButton
-                isBookmarked={isBookmarked}
+                isBookmarkedProd={isBookmarked}
                 style={{paddingHorizontal: 10}}
                 onPressBookmark={onPressBookmark}
                 />
@@ -26,7 +26,7 @@ export default({
                 {/* 버스번호, 방향 */}
                 <View style={{flex: 1, }}>
                     <Text style={{color: numColor , fontSize: 20, fontWeight: 'bold'}}>{num}</Text>
-                    <Text style={{fontSize: 14, color: COLOR.GRAY_3}}>{directionDescription} 방향</Text>
+                    <Text style={{fontSize: 14, color: COLOR.GRAY_3, marginRight: 2}}>{directionDescription} 방향</Text>
                 </View>
             </View>
 

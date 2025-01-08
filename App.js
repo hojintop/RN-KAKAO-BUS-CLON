@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { SectionList, StyleSheet, Text, View } from "react-native";
+import { RefreshControl, SectionList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import BusInfo from "./src/BusInfo";
 import { COLOR } from "./src/color";
@@ -13,10 +13,13 @@ import {
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import HeaderBusInfo from "./src/HeaderBusInfo";
+import Margin from "./src/Margin";
+import HeaderNavi from "./src/HeaderNavi";
 
 export default function App() {
   const sections = getSections(busStop.buses);
   const [now, setNow] = useState(dayjs());
+  const [isRefreshing, setIsRefreshing] = useState();
 
   function renderItem({ item }) {
     const firstNextBusInfo = item.nextBusInfos?.[0] ?? null;
@@ -27,7 +30,7 @@ export default function App() {
     } else {
       newNextBusInfos = [firstNextBusInfo, secondNextBusInfo];
     }
-
+    
     const processedNextBusInfos = newNextBusInfos.map((info) => {
       if (!info) {
         return {
@@ -83,25 +86,57 @@ export default function App() {
     );
   }
 
+  function ItemSeparatorComponent(){
+    return(
+      <View style={{width: '100%', height: 1, backgroundColor: COLOR.GRAY_1}}/>
+    );
+
+  }
+
+  function ListFooterComponent(){
+    return(
+      <Margin height={30} />
+    );
+  }
+
+  function onRefresh(){
+    setIsRefreshing(true);
+  }
+
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(dayjs());
-    }, 1000);
+    }, 3000);
 
     return () => {
       clearInterval(interval);
     };
   }, []);
 
+  useEffect(() => {
+    if(isRefreshing){
+      setNow(dayjs());
+      setIsRefreshing(false);  
+    }
+    // setTimeout(() => {
+    //   setIsRefreshing(false);  
+    // }, 2000);
+    
+  },[isRefreshing])
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={["left", "right"]}>
+        <HeaderNavi />
         <SectionList
-          style={{ flex: 1, width: "100%" }}
+          style={{ flex: 1, width: "100%",}}
           sections={sections}
           ListHeaderComponent={ListHeaderComponent}
           renderSectionHeader={renderSectionHeader}
           renderItem={renderItem}
+          ItemSeparatorComponent={ItemSeparatorComponent}
+          ListFooterComponent={ListFooterComponent}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh}/>}
         />
       </SafeAreaView>
     </SafeAreaProvider>
